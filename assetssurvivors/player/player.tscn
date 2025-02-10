@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://vp3hpr0i2eul"]
+[gd_scene load_steps=6 format=3 uid="uid://vp3hpr0i2eul"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_aisgu"]
 [ext_resource type="Texture2D" uid="uid://bggfi64ank0ge" path="res://assets/dinoCharactersVersion1.1/misc/shadow_2.png" id="2_2jqrm"]
 [ext_resource type="SpriteFrames" uid="uid://ceskrfodk4sbm" path="res://animations/vita_the_dinosaur.tres" id="3_1d5u4"]
-[ext_resource type="Script" path="res://player/animated_sprite_2d.gd" id="4_stjw2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uutjd"]
 
@@ -25,13 +24,15 @@ texture = ExtResource("2_2jqrm")
 sprite_frames = ExtResource("3_1d5u4")
 animation = &"hurt"
 autoplay = "idle"
-frame = 3
-frame_progress = 1.0
-script = ExtResource("4_stjw2")
 
 [node name="Magnet" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_6oajc")
 debug_color = Color(0.941176, 0.466667, 0.466667, 0.286275)
 
+[node name="InvulnerabilityTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="AnimatedSprite2D" method="_on_animation_finished"]
+[connection signal="timeout" from="InvulnerabilityTimer" to="." method="_on_invulnerability_timer_timeout"]

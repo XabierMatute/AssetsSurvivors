@@ -196,6 +196,34 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_8eoaq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqykb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8dhjl")
+}],
+"loop": false,
+"name": &"hurt_end",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8dhjl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yanhg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8eoaq")
+}],
+"loop": false,
+"name": &"hurt_start",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_ncp27")
 }, {
 "duration": 1.0,

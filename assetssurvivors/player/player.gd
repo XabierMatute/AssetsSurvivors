@@ -27,6 +27,9 @@ var screen_size # Size of the game window.
 
 var direction := Vector2(0, 1)
 
+var health: int = max_health
+var invulnerable: bool = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -50,15 +53,49 @@ func _process(delta):
 	if input_vector.length() != 0:
 		direction = input_vector
 		velocity = input_vector.normalized() * get_move_speed()
-		$AnimatedSprite2D.flip_h = direction.x < 0
-		$AnimatedSprite2D.play("walk")
+		if direction.x:
+			$AnimatedSprite2D.flip_h = direction.x < 0
+		if  not animation_busy:
+			play_animation("walk")
 	else:
-		$AnimatedSprite2D.play("idle")
+		if not animation_busy:
+			play_animation("idle")
 	
 	position += velocity * delta
 	position = position.clamp(Vector2.ZERO, screen_size)
 
+func take_damage(damage: int):
+	if invulnerable:
+		return
+	health -= damage
+	play_animation("hurt_start")
+	become_invulnerable()
+
+func become_invulnerable():
+	invulnerable = true
+	$InvulnerabilityTimer.start()
+	
 
 func _on_body_entered(body: Node2D) -> void:
-	print("ay")
-	$AnimatedSprite2D.play("hurt")
+	take_damage(42)
+
+
+func _on_invulnerability_timer_timeout() -> void:
+	invulnerable = false
+	if $AnimatedSprite2D.animation == "hurt_start":
+		animation_busy = false
+		play_animation("hurt_end")
+		
+var animation_busy: bool = false
+func play_animation(name: String):
+	if animation_busy:
+		print("busy")
+		return
+	$AnimatedSprite2D.play(name)
+	if name == "hurt_start" or name == "hurt_end":
+		animation_busy = true
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	if $AnimatedSprite2D.animation != "hurt_start":
+		animation_busy = false
